@@ -3,6 +3,7 @@ import socket
 import time
 import base64
 import codecs
+import zlib
 
 # server information
 server = "irc.root-me.org"
@@ -11,7 +12,7 @@ channel = "#root-me_challenge"
 nickname = "mybot"
 target = "Candy"
 
-msg = "!ep3"
+msg = "!ep4"
 
 # create socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -25,8 +26,9 @@ irc.send(f"USER {nickname} {nickname} {nickname} :Python IRC\r\n".encode())
 
 def answer(s):
         s = s.strip()
-        s = codecs.encode(s, "rot_13")
-        return s
+        s = base64.b64decode(s)
+        s = zlib.decompress(s)
+        return s.decode()
 
 while True:
         # receive data
