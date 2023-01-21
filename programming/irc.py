@@ -1,6 +1,8 @@
 import math
 import socket
 import time
+import base64
+import codecs
 
 # server information
 server = "irc.root-me.org"
@@ -8,6 +10,8 @@ port = 6667
 channel = "#root-me_challenge"
 nickname = "mybot"
 target = "Candy"
+
+msg = "!ep3"
 
 # create socket
 irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -19,10 +23,10 @@ irc.connect((server, port))
 irc.send(f"NICK {nickname}\r\n".encode())
 irc.send(f"USER {nickname} {nickname} {nickname} :Python IRC\r\n".encode())
 
-def parse(s):
-        a = float(s[1][1:])
-        b = float(s[3].strip())
-        return round(math.sqrt(a) * b, 2)
+def answer(s):
+        s = s.strip()
+        s = codecs.encode(s, "rot_13")
+        return s
 
 while True:
         # receive data
@@ -37,14 +41,15 @@ while True:
                 # do something with the message
                 print("Received a message!")
                 print(data)
-                print(data[-18:].split(" "))
-                c = parse(data[-18:].split(" "))
-                irc.send(f"PRIVMSG {target} :!ep1 -rep {c}\r\n".encode())
-                print(c)
+                reply = data[data.index("mybot :") + len("mybot :"):]
+                print(reply)
+                a = answer(reply)
+                print(a)
+                irc.send(f"PRIVMSG {target} :{msg} -rep {a}\r\n".encode())
         if data.find("End of /NAMES list") != -1:
                 # do something when the NAMES list is complete
                 print("NAMES list complete.")
-                irc.send(f"PRIVMSG {target} :!ep1\r\n".encode())
+                irc.send(f"PRIVMSG {target} {msg}\r\n".encode())
         if not data:
                 break
         time.sleep(1)  # sleep for 60 seconds
