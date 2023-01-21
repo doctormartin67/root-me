@@ -1,0 +1,7 @@
+SUID dangers:
+https://repository.root-me.org/Administration/Unix/EN%20-%20Dangers%20of%20SUID%20Shell%20Scripts.pdf
+
+check what you can do as sudo:
+sudo -l
+if there is a wildcard (*) it can be used as an exploit...
+

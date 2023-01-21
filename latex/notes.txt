@@ -1,0 +1,6 @@
+code execution in latex:
+https://stackoverflow.com/questions/3252957/how-to-execute-shell-script-from-latex
+
+stupid underscores dont seem to work, how to fix
+#!/bin/bash
+cat /challenge/app-script/ch24/flag\_is\_here/512cba42fe46c1f346996b51fa053b15fba17baefa038d434381aa68bba6/.passwd
